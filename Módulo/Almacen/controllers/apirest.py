@@ -22,20 +22,22 @@ class ApiRest(http.Controller):
         #Si es GET, ddeolvemos el registro de la busqueda
         record = http.request.env["pedidos"].sudo().search([('estado', '=', "0")])
 
-        diccionario = {}
+        diccionarioCompleto = {}
         listaPedidos = {}
         if record and record[0]:
             for pedido in record:
-                listaProductos = {}
+                listaProductos = []
                 for producto in pedido.productos:
                     datosProducto = http.request.env["productos"].sudo().search([('id', '=', producto.id)])
-                    if producto and producto[0]:
-                        producto = {'id': datosProducto.id, 'nombre': datosProducto.nombre}
-                        listaProductos[datosProducto.id] = producto
+                    if datosProducto and datosProducto[0]:
+                        contenidoProducto = {'id': datosProducto.id, 'nombre': datosProducto.nombre}
+                        listaProductos.append(contenidoProducto)
                 listaPedidos[pedido.id] = listaProductos
+                diccionarioCompleto["pedidos"] = (listaPedidos)
 
+            #diccionarioCompleto["pedidos"] = listaPedidos
             return http.Response( 
-            json.dumps(listaPedidos, default=str), 
+            json.dumps(diccionarioCompleto, default=str), 
                 status=200,
                 mimetype='application/json'
             )
