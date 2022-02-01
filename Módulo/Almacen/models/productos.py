@@ -36,4 +36,4 @@ class Productos(models.Model):
     nombre = fields.Char("Nombre del producto")
     descripcion = fields.Html('Descripción', sanitize=True, strip_style=False)
     precio = fields.Float("Precio")
-    pedidos = fields.Many2one("pedidos", "Pedidos")
+    pedidos = fields.Many2many("pedidos")

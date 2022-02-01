@@ -3,10 +3,10 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
-class Pedidos(models.Model):
+class Proveedores(models.Model):
     # Nombre y descripcion del modelo
-    _name = 'pedidos'
-    _description = 'Pedidos de la empresa de transporte'
+    _name = 'proveedores'
+    _description = 'proveedores de la empresa de transporte'
 
     # Parametros de ordenacion por defecto
     _order = 'identificador'
@@ -21,19 +21,15 @@ class Pedidos(models.Model):
     # Aqui indicamos que se use el atributo "identificador"
     _rec_name = 'identificador'    
 
-    # Lista de los estados que podrá tener un pedido
-    ESTADOSPEDIDO = [
-        ('0', 'En espera'),
-        ('1', 'Recibido')
-    ]
 
     #Elementos de cada fila del modelo de datos
     #Los tipos de datos a usar en el ORM son 
     # https://www.odoo.com/documentation/14.0/developer/reference/addons/orm.html#fields
 
-    identificador = fields.Integer(string = "ID Pedido", readonly = True, default = lambda self: self.env['ir.sequence'].
+    identificador = fields.Integer(string = "ID Producto", readonly = True, default = lambda self: self.env['ir.sequence'].
     next_by_code('increment_your_field'))
-    fechaCreacion = fields.Datetime("Fecha de creación")
-    fechaEntrada = fields.Datetime("Fecha de entrada")
-    estado = fields.Selection(ESTADOSPEDIDO, default = ESTADOSPEDIDO[0][0])
-    productos = fields.Many2many("productos")
+    nombre = fields.Char("Nombre del proveedor")
+    direccion = fields.Char("Dirección del proveedor")
+    telefono = fields.Char("Teléfono del proveedor")
+    email = fields.Char("Email del proveedor")
+    

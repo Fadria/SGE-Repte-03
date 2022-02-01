@@ -3,3 +3,4 @@
 # Si creamos mas modelos, deben importarse en este fichero
 from . import pedidos
 from . import productos
+from . import proveedores

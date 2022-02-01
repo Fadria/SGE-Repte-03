@@ -31,5 +31,6 @@
         #Cargamos las vistas y las plantillas
         'views/pedidos.xml',
         'views/productos.xml',
+        'views/proveedores.xml',
     ]
 }
