@@ -18,8 +18,8 @@ class Productos(models.Model):
     
     # Indicamos que atributo sera el que se usara para mostrar nombre.
     # Por defecto es "name", pero si no hay un atributo que se llama name, aqui lo indicamos
-    # Aqui indicamos que se use el atributo "identificador"
-    _rec_name = 'identificador'    
+    # Aqui indicamos que se use el atributo "nombre"
+    _rec_name = 'nombre'    
 
     # Lista de los estados que podrá tener un pedido
     ESTADOSPEDIDO = [
@@ -36,4 +36,4 @@ class Productos(models.Model):
     nombre = fields.Char("Nombre del producto")
     descripcion = fields.Html('Descripción', sanitize=True, strip_style=False)
     precio = fields.Float("Precio")
-    pedidos = fields.Many2many("pedidos")
+    productospedido = fields.One2many("productospedido", "producto")

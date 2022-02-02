@@ -21,7 +21,6 @@
                     <field name="fechaCreacion"/>
                     <field name="fechaEntrada"/>
                     <field name="estado"/>
-                    <field name="productos" widget="many2many"/>
                 </group>
             </form>
         </field>
@@ -32,11 +31,10 @@
         <field name="model">pedidos</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="identificador"/>
+                <field name="id"/>
                 <field name="fechaCreacion"/>
                 <field name="fechaEntrada"/>
                 <field name="estado"/>
-                <field name="productos" widget="many2many"/>
             </tree>
         </field>
     </record>
@@ -46,11 +44,10 @@
         <field name="model">pedidos</field>
         <field name="arch" type="xml">
             <search>
-                <field name="identificador"/>
+                <field name="id"/>
                 <field name="fechaCreacion"/>
                 <field name="fechaEntrada"/>
                 <field name="estado"/>
-                <field name="productos" widget="many2many"/>
             </search>
         </field>
     </record>

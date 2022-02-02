@@ -32,5 +32,6 @@
         'views/pedidos.xml',
         'views/productos.xml',
         'views/proveedores.xml',
+        'views/productospedido.xml',        
     ]
 }

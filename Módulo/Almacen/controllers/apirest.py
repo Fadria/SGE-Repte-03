@@ -8,53 +8,51 @@ import json
 
 
 class ApiRest(http.Controller):
-    
+     
 
     '''
-
-    Probar GET (Consultando socio 3)
-    Valor de data: {"num_socio":"3"}
-    URL COMPLETA (Enviada con GET): http://localhost:8069/almacen/apirest/pedidos
+        Ejemplo de ruta: http://172.26.80.37:8069/almacen/apirest/obtenerPedidos
     '''
-    @http.route('/almacen/apirest/pedidos', auth="none", cors='*', csrf=False, methods=["GET"],
+    @http.route('/almacen/apirest/obtenerPedidos', auth="none", cors='*', csrf=False, methods=["GET"],
                 type='http')
-    def apiGet(self, **args):
+    def obtenerPedidos(self, **args):
         #Si es GET, ddeolvemos el registro de la busqueda
-        record = http.request.env["pedidos"].sudo().search([('estado', '=', "0")])
+        record = http.request.env["pedidos"].sudo().search([('estado', '=', '1')])
 
-        diccionarioCompleto = {}
-        listaPedidos = {}
-        if record and record[0]:
-            for pedido in record:
-                listaProductos = []
-                for producto in pedido.productos:
-                    datosProducto = http.request.env["productos"].sudo().search([('id', '=', producto.id)])
-                    if datosProducto and datosProducto[0]:
-                        contenidoProducto = {'id': datosProducto.id, 'nombre': datosProducto.nombre}
-                        listaProductos.append(contenidoProducto)
-                listaPedidos[pedido.id] = listaProductos
-                diccionarioCompleto["pedidos"] = (listaPedidos)
+        diccionarioCompleto = {} # Diccionario principal
+        listaPedidos = [] # Contendrá una lista de diccionarios de productos
+        
+        if record and record[0]: # Si disponemos de al menos un pedido procederemos
+            for pedido in record: # Bucle que contendrá cada pedido
+                diccionarioPedido = {} # Diccionario del pedido
+                diccionarioPedido["idPedido"] = pedido.id # Añadimos la id del pedido al diccionario
 
-            #diccionarioCompleto["pedidos"] = listaPedidos
+                listaProductos = [] # Lista que contendrá todos los productos del pedido
+
+                # Obtenemos todos los productos de este pedido
+                productosDelPedido = http.request.env["productospedido"].sudo().search([('pedido', '=', pedido.id)])
+
+                # Bucle ejecutado por cada producto del pedido
+                for productoDelPedido in productosDelPedido:
+                    diccionarioProducto = {} # Diccionario del producto, contendrá la id y el nombre
+                    diccionarioProducto["idProducto"] = productoDelPedido.producto.id # Añadimos la id del producto
+                    diccionarioProducto["nombre"] = productoDelPedido.producto.nombre # Añadimos el nombre del producto
+
+                    listaProductos.append(diccionarioProducto) # Añadimos el diccionario a la lista de productos
+                    diccionarioPedido["productos"] = listaProductos 
+
+                listaPedidos.append(diccionarioPedido)
+                # Finaliza el bucle de pedidos
+
+            # Añadimos la lista de pedidos a nuestro diccionario
+            diccionarioCompleto["pedidos"] = listaPedidos
+
             return http.Response( 
             json.dumps(diccionarioCompleto, default=str), 
                 status=200,
                 mimetype='application/json'
             )
 
-        return "{'estado':'NOTFOUND'}"        
+        return "{'estado':'NOTFOUND'}"   
 
-    @http.route('/almacen/apirest/producto/<idproducto>', auth="none", cors='*', csrf=False, methods=["GET"],
-                type='http')
-    def a(self, idproducto, **args):
-        #Si es GET, ddeolvemos el registro de la busqueda
-        record = http.request.env["productos"].sudo().search([('id', '=', idproducto)])
-
-        if record and record[0]:
-            return http.Response( 
-            json.dumps(record.read(), default=str), 
-                status=200,
-                mimetype='application/json'
-            )
-
-        return "{'estado':'NOTFOUND'}"     
+        return "{'estado':'NOTFOUND'}" 

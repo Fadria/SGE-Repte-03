@@ -23,8 +23,11 @@ class Pedidos(models.Model):
 
     # Lista de los estados que podrá tener un pedido
     ESTADOSPEDIDO = [
-        ('0', 'En espera'),
-        ('1', 'Recibido')
+        ('0', 'No ha llegado'),
+        ('1', 'Esperando operario'),
+        ('2', 'Comprobación en curso'),
+        ('3', 'Pedido erróneo'),
+        ('4', 'Pedido completo'),
     ]
 
     #Elementos de cada fila del modelo de datos
@@ -36,4 +39,3 @@ class Pedidos(models.Model):
     fechaCreacion = fields.Datetime("Fecha de creación")
     fechaEntrada = fields.Datetime("Fecha de entrada")
     estado = fields.Selection(ESTADOSPEDIDO, default = ESTADOSPEDIDO[0][0])
-    productos = fields.Many2many("productos")

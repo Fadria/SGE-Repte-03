@@ -15,7 +15,7 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="identificador"/>
+                    <field name="id"/>
                     <field name="nombre"/>
                     <field name="descripcion"/>
                     <field name="precio"/>
@@ -29,7 +29,7 @@
         <field name="model">productos</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="identificador"/>
+                <field name="id"/>
                 <field name="nombre"/>
                 <field name="descripcion"/>
                 <field name="precio"/>

@@ -32,4 +32,4 @@ class Proveedores(models.Model):
     direccion = fields.Char("Dirección del proveedor")
     telefono = fields.Char("Teléfono del proveedor")
     email = fields.Char("Email del proveedor")
-    
+    productospedido = fields.One2many("productospedido", "pedido")

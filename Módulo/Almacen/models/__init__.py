@@ -4,3 +4,4 @@
 from . import pedidos
 from . import productos
 from . import proveedores
+from . import productospedido
