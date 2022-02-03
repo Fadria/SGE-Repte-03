@@ -1,7 +1,10 @@
 package com.jovian.repte.model
 
+import com.google.gson.annotations.SerializedName
+
 class PedidoResponse (
 
-    var pedidos: ArrayList<Pedido>
+    // Campo que contiene la lista de usuarios
+    @SerializedName("pedidos") var pedidos: List<Pedido>,
 
-)
+    )
