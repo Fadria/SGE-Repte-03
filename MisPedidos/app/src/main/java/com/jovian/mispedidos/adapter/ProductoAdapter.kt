@@ -12,13 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jovian.mispedidos.R
 import com.jovian.mispedidos.model.Pedido
 import com.jovian.mispedidos.ui.ProductosActivity
+import com.jovian.mispedidos.utils.QRActivity
 
 class ProductoAdapter (private var ctx: Context, posicion: Int) :
     RecyclerView.Adapter<ProductoAdapter.MyViewHolder>() {
     var itemClickListener: AdapterView.OnItemClickListener? = null
     var pos: Int = posicion
-
-
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -45,9 +44,17 @@ class ProductoAdapter (private var ctx: Context, posicion: Int) :
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.check
+        if(Pedido.listaPedidos[pos].productos.get(position).checked == true) holder.check.setChecked(true)
         holder.productoid.text =  Pedido.listaPedidos[pos].productos.get(position).idProducto.toString()
         holder.productoName.text = Pedido.listaPedidos[pos].productos.get(position).nombre
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(ctx, QRActivity::class.java)
+            intent.putExtra("idProducto", Pedido.listaPedidos[pos].productos.get(position).idProducto)
+            intent.putExtra("posicion", position)
+            intent.putExtra("posPedido",pos)
+            ctx.startActivity(intent)
+        }
 
 
     }
