@@ -55,6 +55,7 @@ class ProductoAdapter (private var ctx: Context, posicion: Int) :
     //metodo para rellenar con datos los items del listado
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
+        //si los productos han sido escaneados, marcamos el check en el item
         if(Pedido.listaPedidos[pos].productos.get(position).checked == true) holder.check.setChecked(true)
         holder.productoid.text =  Pedido.listaPedidos[pos].productos.get(position).idProducto.toString()
         holder.productoName.text = Pedido.listaPedidos[pos].productos.get(position).nombre

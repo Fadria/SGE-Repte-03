@@ -12,6 +12,7 @@ import com.jovian.mispedidos.adapter.PedidoAdapter
 import com.jovian.mispedidos.adapter.ProductoAdapter
 import com.jovian.mispedidos.databinding.ActivityProductosBinding
 import com.jovian.mispedidos.model.Pedido
+import com.jovian.mispedidos.utils.SET_PEDIDOS
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -84,19 +85,24 @@ class ProductosActivity : AppCompatActivity() {
         }
     }
 
-     
+    //esta funcion sirve para indicar al servidor que el pedido está comprobado
+    //Basicamente es coger el enlace y añadirle el id del producto
+    //se hace un post al servidor y alli actualiza el estado del pedido
     private fun cerrarPedido(id: Long) {
         //Create an instances of Volley's queue
         var queue = Volley.newRequestQueue(this)
         var idPedido: String = id.toString()
 
         //URL
-        val url = "http://172.26.80.40:8069/almacen/apirest/finalizarPedido/" + idPedido
+        val url = SET_PEDIDOS + idPedido
         Log.i("url", url)
 
+        //este objeto se crea vacio porque la funcion lo exige, pero no pasamos
+        //puede valer para realizar post y subir daots
         val jsonObject = JSONObject() //The jsonObject sent
 
         //jsonObject Request
+        //hemos cambiado post por put y de esa manera se actualiza el estado del pedido en el servidor
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.PUT,
             url,

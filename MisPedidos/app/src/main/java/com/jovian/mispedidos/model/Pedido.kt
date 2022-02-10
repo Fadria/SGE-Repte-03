@@ -7,6 +7,8 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.jovian.mispedidos.ui.MainActivity
+import com.jovian.mispedidos.utils.GET_PEDIDOS
+import com.jovian.mispedidos.utils.URL_APIFALSA
 import java.lang.reflect.InvocationTargetException
 
 /**
@@ -43,13 +45,13 @@ data class Pedido(
             var queue = Volley.newRequestQueue(ctx)
 
             //URL Url de un api rest creado para pruebas sin servidor
-            //val url = "https://mocki.io/v1/ad331397-c6bf-4056-be43-ec671739c4fa"
+            //val url = URL_APIFALSA
             //Url real de odoo
-            val url = "http://172.26.80.40:8069/almacen/apirest/obtenerPedidos"
+            //val url = GET_PEDIDOS
             //jsonObject Request
             val jsonObjectRequest = JsonObjectRequest(
                 Request.Method.GET,
-                url,
+                GET_PEDIDOS,
                 null,
                 { response ->
                     //El valor Response es el objeto Json encontrado en la URL
@@ -58,6 +60,8 @@ data class Pedido(
                     //y rellenando el array de lista de pedidos
                     Log.i("RESPONSE:", "Response is: ${response}")
                     onReceive(9)
+                    //nos puede ocurrir que no hayan pedidos que leer, con lo cual creamos el try catch
+                    //para recoger el error y que el programa no finalice por error
                     try {
                         val pedidos = response.getJSONArray("pedidos")
                         for (num in 0..pedidos.length() - 1) {
@@ -86,6 +90,7 @@ data class Pedido(
                             //para comprobacion del programador
                             Log.i("tamaño", listaPedidos.size.toString())
                         }
+                        //en el caso de que no hayan pedidos, salvamos el error y mostramos un toast
                     } catch(e:Exception){
                         Toast.makeText(ctx, "No hay pedidos", Toast.LENGTH_LONG).show()
                     }

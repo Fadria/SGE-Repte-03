@@ -20,6 +20,7 @@ import com.jovian.mispedidos.ui.ProductosActivity
  * @since 10Feb2022
  * @version 1.0
  * @description: Adapter para mostrar un listado con los pedidos que llegan desde la central
+ *
  */
 class PedidoAdapter(private var ctx: Context) :
     RecyclerView.Adapter<PedidoAdapter.MyViewHolder>() {
@@ -28,12 +29,12 @@ class PedidoAdapter(private var ctx: Context) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val v: View = LayoutInflater.from(ctx).inflate(R.layout.item_pedido, parent, false)
         return MyViewHolder(v)
-
     }
 
     //metodo para rellenar con datos los items del listado
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
+        //si el pedido ha sido comprobado, o sea estan todos los productos,marcamos el check
         if(Pedido.listaPedidos[position].checked == true) holder.check.setChecked(true)
         holder.productoid.text = "Numero de pedido" + Pedido.listaPedidos[position].idPedido.toString()
 
@@ -44,15 +45,14 @@ class PedidoAdapter(private var ctx: Context) :
             intent.putExtra("posicion", position)
             ctx.startActivity(intent)
         }
-
-
     }
 
+    //funcion que devuelve eñ total de pedidos en la lista
     override fun getItemCount(): Int {
         return Pedido.listaPedidos.size
     }
 
-    //clase para capturar los diferentes elementos del item y darles un nombre de variable. La pongo dentro para tener todo el adpater junto.
+    //clase para capturar los diferentes elementos del item y darles un nombre de variable. La pongo dentro para tener los elementos del adapter juntos
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var productoid: TextView
         var check : CheckBox
