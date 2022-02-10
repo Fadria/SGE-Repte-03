@@ -22,6 +22,14 @@ import kotlin.properties.Delegates
 
 private const val CAMERA_REQUEST_CODE = 110
 
+/**
+ * @author anonymous
+ * @description: Activity la lectura de codigos qr
+ * el codigo no es mio, simplemente he modificado codigo para almacenamiento de datos
+ * y comportamiento de la activity en caso de lectura correcta o no del codigo
+ * como dato, en el MacBook M1 pro no he sido capaz de arrancar camaras externas y virtual scene(delicadito el nene)
+ * en windows 11, sin problema
+ **/
 class QRActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityQractivityBinding
@@ -39,6 +47,10 @@ class QRActivity : AppCompatActivity() {
         binding = ActivityQractivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //alamcenamos en variables distintos datos, como el id del producto,
+        //la posicion del producto en el array
+        //la posicion del pedido en el listado de pedidos
+        //de este modo, podemos localizar el objeto y marcar el check si el codigo qr es correcto
         if(intent.hasExtra("idProducto")) {
             id = intent.getLongExtra("idProducto", 0)
             idString = id.toString()
@@ -50,7 +62,7 @@ class QRActivity : AppCompatActivity() {
             posPedido = intent.getIntExtra("posPedido",0)
         }
 
-        //Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
+        Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
 
 
         if (ContextCompat.checkSelfPermission(
@@ -114,6 +126,11 @@ class QRActivity : AppCompatActivity() {
                     .show()
             }
 
+            //aqui esta la crema de toda la clase
+            //cogemos la lectura del codigo qr y comparamos con el id del producto
+            //si es correcto, marcamos el check a true y lo indicamos
+            //en caso contrario, indicamos el error
+            //y cada vez que finaliza la lectura, finaliza la activity
             override fun receiveDetections(detections: Detector.Detections<Barcode>) {
                 val barcodes = detections.detectedItems
                 if (barcodes.size() == 1) {
@@ -127,7 +144,7 @@ class QRActivity : AppCompatActivity() {
                             Toast.makeText(this@QRActivity, "Producto registrado", Toast.LENGTH_SHORT).show()
                             Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
                         }
-                        else Toast.makeText(this@QRActivity, "$scannedValue", Toast.LENGTH_SHORT).show()
+                        else Toast.makeText(this@QRActivity, "El codigo del producto no coincide", Toast.LENGTH_SHORT).show()
                         finish()
                     }
                 }else
@@ -146,7 +163,6 @@ class QRActivity : AppCompatActivity() {
             requestCodeCameraPermission
         )
     }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

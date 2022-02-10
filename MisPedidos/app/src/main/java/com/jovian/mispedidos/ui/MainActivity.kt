@@ -26,11 +26,16 @@ import com.jovian.mispedidos.utils.NOTIFICATION_ID
 import com.jovian.mispedidos.utils.PENDING_REQUEST
 import kotlinx.coroutines.*
 
+/**
+ * @author Cassandra Sowa, Federico Adria, Esther Talavera, Javier Tamarit, Jorge Victoria
+ * @since 10Feb2022
+ * @version 1.0
+ * @description: Activity pricipal de la app
+ * desde aqui invocamos distintas funciones para la lectura de datos de api y carga en recyclerview
+ **/
 class MainActivity : AppCompatActivity() {
-
+    //variable para el binding
     private lateinit var binding: ActivityMainBinding
-    var listaPedidos : MutableList<Pedido> = mutableListOf()
-    private var pedido: Pedido? = null
     //variable para gestion de notificaciones
     val pendingIntent: PendingIntent by lazy { makePendingIntent() }
 
@@ -40,27 +45,34 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //coroutine para llamada a la funcion
         GlobalScope.launch {
             leerDatos()
         }
 
-
-
-
     }
 
+    //funcion para realizar llamadas al servidor cada cierto tiempo
+    //hemos incluido un bucle para pruebas
+    //TODO investigar sobre JOB
+    //por cada paso del bucles llamamos a la funcion getPedidos para leer datos y cargar el recycler
+    //esto nos permite capturar pedidos nuevos en tiempo real
+    //y no cargar el recycler view hasta que se complete la lectura de datos
+    //tambien saltará una notificacion cuando entre un pedido nuevo
     private suspend fun leerDatos() {
         for(num in 1..1000) {
             Pedido.getPedidos(this, {
                 InitRecycler()
             }, {
-                sendNotification("Pedido recibido")
+                sendNotification("")
             })
             delay(10000)
+            //para test del desarrollador
             Log.i("loading", "loading")
         }
     }
 
+    //funcion para cargar del recycler view
     fun InitRecycler(){
         binding.rvPedidos.layoutManager = LinearLayoutManager(this)
         val adapter = PedidoAdapter(this)
