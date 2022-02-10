@@ -50,7 +50,7 @@ class QRActivity : AppCompatActivity() {
             posPedido = intent.getIntExtra("posPedido",0)
         }
 
-        Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
+        //Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
 
 
         if (ContextCompat.checkSelfPermission(
@@ -123,7 +123,11 @@ class QRActivity : AppCompatActivity() {
                     //Don't forget to add this line printing value or finishing activity must run on main thread
                     runOnUiThread {
                         cameraSource.stop()
-                        Toast.makeText(this@QRActivity, "value- $scannedValue", Toast.LENGTH_SHORT).show()
+                        if(scannedValue.equals(idString)){
+                            Toast.makeText(this@QRActivity, "Producto registrado", Toast.LENGTH_SHORT).show()
+                            Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
+                        }
+                        else Toast.makeText(this@QRActivity, "$scannedValue", Toast.LENGTH_SHORT).show()
                         finish()
                     }
                 }else
