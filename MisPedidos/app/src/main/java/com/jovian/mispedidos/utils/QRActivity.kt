@@ -62,7 +62,8 @@ class QRActivity : AppCompatActivity() {
             posPedido = intent.getIntExtra("posPedido",0)
         }
 
-        Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
+        //para pruebas
+        //Pedido.listaPedidos[posPedido].productos.get(pos).checked = true
 
 
         if (ContextCompat.checkSelfPermission(

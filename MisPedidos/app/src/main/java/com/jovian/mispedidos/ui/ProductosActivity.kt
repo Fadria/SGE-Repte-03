@@ -95,8 +95,6 @@ class ProductosActivity : AppCompatActivity() {
         Log.i("url", url)
 
         val jsonObject = JSONObject() //The jsonObject sent
-        //jsonObject.put("name","Gandalf")
-        //jsonObject.put("class","Wizard")
 
         //jsonObject Request
         val jsonObjectRequest = JsonObjectRequest(

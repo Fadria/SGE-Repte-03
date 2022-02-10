@@ -2,10 +2,12 @@ package com.jovian.mispedidos.model
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.jovian.mispedidos.ui.MainActivity
+import java.lang.reflect.InvocationTargetException
 
 /**
  * @author Cassandra Sowa, Federico Adria, Esther Talavera, Javier Tamarit, Jorge Victoria
@@ -56,32 +58,36 @@ data class Pedido(
                     //y rellenando el array de lista de pedidos
                     Log.i("RESPONSE:", "Response is: ${response}")
                     onReceive(9)
-                    val pedidos = response.getJSONArray("pedidos")
-                    for(num in 0..pedidos.length()-1){
-                        val pedido = pedidos.getJSONObject(num)
-                        val idPedido = pedido.getLong("idPedido")
-                        //OJO: tenemos que comprobar que el pedido leido no los tenemos en nuestro array
-                        //asi que llamamos a la funcion que comprueba el id del pedido recibido con los que tenemos localmente
-                        compararPedido(idPedido)
-                        //si el pedido ya existe, rompemos el bucle para avanzar una posicion en el
-                        if(existe) continue
-                        //si el pedido no existe usamos el callback del main, para enviar una notificacion al movil
-                        else onNew()
-                        //y a partir de aqui seguimos con la construcciom
-                        val productos = pedido.getJSONArray("productos")
-                        val listaProductos: ArrayList<Producto> = ArrayList<Producto>()
-                        val objetoPedido = Pedido(false,idPedido, listaProductos)
+                    try {
+                        val pedidos = response.getJSONArray("pedidos")
+                        for (num in 0..pedidos.length() - 1) {
+                            val pedido = pedidos.getJSONObject(num)
+                            val idPedido = pedido.getLong("idPedido")
+                            //OJO: tenemos que comprobar que el pedido leido no los tenemos en nuestro array
+                            //asi que llamamos a la funcion que comprueba el id del pedido recibido con los que tenemos localmente
+                            compararPedido(idPedido)
+                            //si el pedido ya existe, rompemos el bucle para avanzar una posicion en el
+                            if (existe) continue
+                            //si el pedido no existe usamos el callback del main, para enviar una notificacion al movil
+                            else onNew()
+                            //y a partir de aqui seguimos con la construcciom
+                            val productos = pedido.getJSONArray("productos")
+                            val listaProductos: ArrayList<Producto> = ArrayList<Producto>()
+                            val objetoPedido = Pedido(false, idPedido, listaProductos)
 
-                        for(nom in 0..productos.length()-1){
-                            val producto = productos.getJSONObject(nom)
-                            val idProducto = producto.getLong("idProducto")
-                            val nombre = producto.getString("nombre")
-                            objetoPedido.productos.add(Producto(false,idProducto,nombre))
+                            for (nom in 0..productos.length() - 1) {
+                                val producto = productos.getJSONObject(nom)
+                                val idProducto = producto.getLong("idProducto")
+                                val nombre = producto.getString("nombre")
+                                objetoPedido.productos.add(Producto(false, idProducto, nombre))
+                            }
+                            //una vez tenemos desgranado el responsey construidos los objetos, ya podemos almacenar el dato
+                            listaPedidos.add(objetoPedido)
+                            //para comprobacion del programador
+                            Log.i("tamaño", listaPedidos.size.toString())
                         }
-                        //una vez tenemos desgranado el responsey construidos los objetos, ya podemos almacenar el dato
-                        listaPedidos.add(objetoPedido)
-                        //para comprobacion del programador
-                        Log.i("tamaño", listaPedidos.size.toString())
+                    } catch(e:Exception){
+                        Toast.makeText(ctx, "No hay pedidos", Toast.LENGTH_LONG).show()
                     }
                 },
                 { error -> error.printStackTrace() }
