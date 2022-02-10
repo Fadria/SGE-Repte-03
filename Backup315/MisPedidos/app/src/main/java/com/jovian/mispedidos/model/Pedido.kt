@@ -41,9 +41,9 @@ data class Pedido(
             var queue = Volley.newRequestQueue(ctx)
 
             //URL Url de un api rest creado para pruebas sin servidor
-            //val url = "https://mocki.io/v1/ad331397-c6bf-4056-be43-ec671739c4fa"
+            val url = "https://mocki.io/v1/ad331397-c6bf-4056-be43-ec671739c4fa"
             //Url real de odoo
-            val url = "http://172.26.80.40:8069/almacen/apirest/obtenerPedidos"
+            //val url = "http://172.26.80.44:8069/almacen/apirest/obtenerPedidos"
             //jsonObject Request
             val jsonObjectRequest = JsonObjectRequest(
                 Request.Method.GET,

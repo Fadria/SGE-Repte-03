@@ -4,9 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.jovian.mispedidos.R
 import com.jovian.mispedidos.adapter.PedidoAdapter
 import com.jovian.mispedidos.adapter.ProductoAdapter
@@ -15,8 +12,6 @@ import com.jovian.mispedidos.model.Pedido
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
 import kotlin.properties.Delegates
 
 /**
@@ -79,40 +74,8 @@ class ProductosActivity : AppCompatActivity() {
         }
         if(estanTodos){
             Pedido.listaPedidos.get(pos).checked = true
-            cerrarPedido(Pedido.listaPedidos.get(pos).idPedido)
             finish()
         }
-    }
-
-     
-    private fun cerrarPedido(id: Long) {
-        //Create an instances of Volley's queue
-        var queue = Volley.newRequestQueue(this)
-        var idPedido: String = id.toString()
-
-        //URL
-        val url = "http://172.26.80.40:8069/almacen/apirest/finalizarPedido/" + idPedido
-        Log.i("url", url)
-
-        val jsonObject = JSONObject() //The jsonObject sent
-        //jsonObject.put("name","Gandalf")
-        //jsonObject.put("class","Wizard")
-
-        //jsonObject Request
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.PUT,
-            url,
-            jsonObject,
-            { response ->
-                //Response is the jsonObject retrieved from de URL
-                Log.i("RESPUESTA", "Response is: ${response}")
-            },
-            { error -> error.printStackTrace() }
-        )
-
-        //Adding our request to the Volley's queue
-        queue.add(jsonObjectRequest)
-
     }
 
     //funcion para cargar del recyclerview
