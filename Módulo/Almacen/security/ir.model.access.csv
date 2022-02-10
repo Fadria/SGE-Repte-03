@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-acl_pedidos,pedidos_default,model_pedidos,,1,1,1,1
-acl_productos,productos_default,model_productos,,1,1,1,1
-acl_proveedores,proveedores_default,model_proveedores,,1,1,1,1
-acl_productospedido,productospedido_default,model_productospedido,,1,1,1,1
