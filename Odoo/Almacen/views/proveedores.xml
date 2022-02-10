@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='proveedores_action' model='ir.actions.act_window'>
+        <field name="name">Proveedores</field>
+        <field name="res_model">proveedores</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Proveedores" id="proveedores_menu" parent="almacen_base_menu" action="proveedores_action"/>
+
+    <record id="proveedores_view_form" model="ir.ui.view">
+        <field name="name">Formulario de proveedores</field>
+        <field name="model">proveedores</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="identificador"/>
+                    <field name="nombre"/>
+                    <field name="direccion"/>
+                    <field name="telefono"/>
+                    <field name="email"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="proveedores_view_tree" model="ir.ui.view">
+        <field name="name">Lista de proveedores</field>
+        <field name="model">proveedores</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="identificador"/>
+                <field name="nombre"/>
+                <field name="direccion"/>
+                <field name="telefono"/>
+                <field name="email"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="proveedores_view_search" model="ir.ui.view">
+        <field name="name">Búsqueda de proveedores</field>
+        <field name="model">proveedores</field>
+        <field name="arch" type="xml">
+            <search>
+                   <field name="identificador"/>
+                   <field name="nombre"/>
+                   <field name="direccion"/>
+                   <field name="telefono"/>
+                   <field name="email"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>
